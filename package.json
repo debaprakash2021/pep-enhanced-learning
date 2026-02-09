@@ -1,0 +1,27 @@
+{
+  "name": "new",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/debaprakash2021/pep-enhanced-learning.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/debaprakash2021/pep-enhanced-learning/issues"
+  },
+  "homepage": "https://github.com/debaprakash2021/pep-enhanced-learning#readme",
+  "dependencies": {
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.6"
+  }
+}
