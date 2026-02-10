@@ -1,6 +1,13 @@
-import app from "./app.js"
-const PORT = process.env.PORT || 3020;
+import dotenv from "dotenv";
+dotenv.config();
 
-app.listen(PORT,(err,data)=>{
-   console.log("server running on port",PORT)
-})
+import app from "./app.js";
+import connectDB from "./config/db.js";
+
+const PORT = process.env.PORT || 5000;
+
+connectDB();
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
