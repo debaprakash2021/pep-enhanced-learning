@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import User from "../models/users.js";
-import OTP from "../models/otp.js";
+import User from "../models/users.models.js";
+import OTP from "../models/otp.models.js";
 import { generateOTP } from "../utils/generateOtp.js";
 import jwt from "jsonwebtoken";
 /**
@@ -8,6 +8,8 @@ import jwt from "jsonwebtoken";
  */
 export const initiateSignupService = async (email) => {
   // 1. Check if user already exists
+
+  console.log("Initiating signup for email:", email);
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new Error("User already exists");
@@ -15,9 +17,11 @@ export const initiateSignupService = async (email) => {
 
   // 2. Remove old OTPs
   await OTP.deleteMany({ email });
-
+ 
   // 3. Generate OTP
+
   const otp = generateOTP();
+  console.log("Generated OTP:", otp);
 
   // 4. Store OTP (hashed by pre-save middleware)
   await OTP.create({
@@ -79,38 +83,38 @@ export const verifySignupOtpService = async ({
 };
 
 
+//Login service
+export const loginService = async (email, password) => {
+  const user = await User
+    .findOne({ email })
+    .select("+password");
 
-// export const loginService = async (email, password) => {
-//   const user = await User
-//     .findOne({ email })
-//     .select("+password");
+  if (!user) {
+    throw new Error("Invalid email or password");
+  }
 
-//   if (!user) {
-//     throw new Error("Invalid email or password");
-//   }
+  const isMatch = await bcrypt.compare(password, user.password);
 
-//   const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new Error("Invalid email or password");
+  }
 
-//   if (!isMatch) {
-//     throw new Error("Invalid email or password");
-//   }
+  const token = jwt.sign(
+    {
+      id: user._id,
+      role: user.role
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
 
-//   const token = jwt.sign(
-//     {
-//       id: user._id,
-//       role: user.role
-//     },
-//     process.env.JWT_SECRET,
-//     { expiresIn: "1h" }
-//   );
-
-//   return {
-//     token,
-//     user: {
-//       id: user._id,
-//       name: user.name,
-//       email: user.email,
-//       role: user.role
-//     }
-//   };
-// };
+  return {
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    }
+  };
+};
