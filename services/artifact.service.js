@@ -6,7 +6,9 @@ import Artifact from "../models/artifact.models.js";
 export const createArtifactService = async ({
   title,
   content,
-  userId
+  userId,
+  filePath
+
 }) => {
   if (!title || !content) {
     throw new Error("Title and content are required");
@@ -15,21 +17,18 @@ export const createArtifactService = async ({
   const artifact = await Artifact.create({
     title,
     content,
-    author: userId
+    author: userId,
+    media: filePath
+
+
   });
 
   return artifact;
 };
 
 
-
-
-
-
-
-
-
 export const getArtifactsService = async ({ userId, role }) => {
+  
   if (role === "ADMIN") {
     // Admin sees everything
     return await Artifact.find().populate("author", "name email role");

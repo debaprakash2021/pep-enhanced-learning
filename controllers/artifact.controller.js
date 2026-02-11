@@ -8,7 +8,8 @@ export const createArtifact = async (req, res) => {
     const artifact = await createArtifactService({
       title: req.body.title,
       content: req.body.content,
-      userId: req.user.id // injected by auth middleware
+      userId: req.user.id,
+      filePath:req.file?.path // injected by auth middleware
     });
 
     res.status(201).json({
@@ -30,6 +31,9 @@ export const createArtifact = async (req, res) => {
 
 export const getArtifacts = async (req, res) => {
   try {
+
+    console.log(req.user); // Debugging line to check user info from auth middleware
+
     const artifacts = await getArtifactsService({
       userId: req.user.id,
       role: req.user.role
@@ -46,3 +50,5 @@ export const getArtifacts = async (req, res) => {
     });
   }
 };
+
+
