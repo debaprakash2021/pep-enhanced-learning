@@ -9,6 +9,8 @@ import authRoutes from "./routes/auth.routes.js";
 import artifactRoutes from "./routes/artifact.routes.js";
 import likes from "./routes/likes.routes.js";
 import comment from "./routes/comment.routes.js";
+import { testing } from "./cron/testing.js";
+
 
 const app = express();
 
@@ -34,6 +36,10 @@ app.get("/", (req, res) => {
     message: "CMS Backend is running"
   });
 });
+
+
+testing();
+
 
 app.use("/auth", authRoutes);
 app.use("/artifacts", artifactRoutes);
