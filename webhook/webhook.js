@@ -9,6 +9,7 @@ router.post('/test', (req, res) => {
          received:true
         }
     );
+    res.json({received: true});
 
 
 });
