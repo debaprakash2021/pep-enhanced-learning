@@ -10,6 +10,7 @@ import artifactRoutes from "./routes/artifact.routes.js";
 import likes from "./routes/likes.routes.js";
 import comment from "./routes/comment.routes.js";
 import { testing } from "./cron/testing.js";
+import webHookRoutes from "./webhook/webhook.js";
 
 
 const app = express();
@@ -40,7 +41,7 @@ app.get("/", (req, res) => {
 
 testing();
 
-
+app.use("/webhook", webHookRoutes); 
 app.use("/auth", authRoutes);
 app.use("/artifacts", artifactRoutes);
 app.use("/likes", likes);
